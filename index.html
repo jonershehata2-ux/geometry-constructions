@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Geometry Construction Practice</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #f5f5f5;
+    }
+    canvas {
+      border: 2px solid black;
+      background: white;
+      margin-top: 10px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Compass & Straightedge Practice</h1>
+
+<button onclick="tool='compassCenter'">Compass</button>
+<button onclick="tool='lineStart'">Straightedge</button>
+<button onclick="clearCanvas()">Clear</button>
+
+<br>
+
+<canvas id="canvas" width="600" height="450"></canvas>
+
+<h2>Practice Constructions</h2>
+<p>
+Perpendicular Bisector • Copy Segment • Equilateral Triangle • Isosceles Triangle •
+Perpendicular On Line • Perpendicular Off Line • Copy Angle • Angle Bisector •
+Parallel Line • Inscribed Hexagon • Inscribed Triangle • Inscribed Square •
+Reflection Line • Rotation Center • Dilation
+</p>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let tool = "compassCenter";
+let center = null;
+let lineStart = null;
+
+canvas.addEventListener("click", function(e) {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  if(tool==="compassCenter"){
+    center={x,y};
+    tool="compassRadius";
+    return;
+  }
+
+  if(tool==="compassRadius"){
+    let r=Math.hypot(x-center.x,y-center.y);
+    ctx.beginPath();
+    ctx.arc(center.x,center.y,r,0,Math.PI*2);
+    ctx.stroke();
+    tool="compassCenter";
+    return;
+  }
+
+  if(tool==="lineStart"){
+    lineStart={x,y};
+    tool="lineEnd";
+    return;
+  }
+
+  if(tool==="lineEnd"){
+    ctx.beginPath();
+    ctx.moveTo(lineStart.x,lineStart.y);
+    ctx.lineTo(x,y);
+    ctx.stroke();
+    tool="lineStart";
+  }
+});
+
+function clearCanvas(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+</script>
+
+</body>
+</html>
